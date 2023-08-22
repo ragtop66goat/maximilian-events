@@ -35,7 +35,6 @@ export async function getStaticProps(context) {
           location: data[key].location
         })
       }
-      console.log("Selected Event " + selectedEvent);
       return {props: {selectedEvent: selectedEvent}};
     })
 }

@@ -28,7 +28,8 @@ export async function getStaticProps() {
       return {
         props: {
           featuredEvents: transformedData
-        }
+        },
+        revalidate: 300
       }
     })
 

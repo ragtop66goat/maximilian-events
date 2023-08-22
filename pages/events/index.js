@@ -1,12 +1,9 @@
-import {getAllEvents} from "@/dummy-data";
 import EventList from "@/components/events/EventList";
 import EventsSearch from "@/components/events/EventsSearch";
-import {Fragment} from "react";
 import {useRouter} from "next/router";
 
-function AllEventsPage() {
+function AllEventsPage(props) {
 
-    const events = getAllEvents();
     const router = useRouter();
 
     function findEventsHandler(month, year) {
@@ -15,10 +12,31 @@ function AllEventsPage() {
         router.push(fullPath);
     }
 
-    return <Fragment>
+    return <>
         <EventsSearch onSearch={findEventsHandler}/>
-        <EventList events={events}/>
-    </Fragment>
+        <EventList events={props.events}/>
+    </>
+}
+
+export async function getStaticProps() {
+    return fetch('https://nextjs-course-cea5e-default-rtdb.firebaseio.com/events.json')
+      .then(response => response.json())
+      .then(data => {
+          const events = [];
+          for(let key in data){
+              events.push({
+                  id: key,
+                  image: data[key].image,
+                  isFeatured: data[key].isFeatured,
+                  location: data[key].location,
+                  title: data[key].title,
+                  description: data[key].description,
+                  date: data[key].date,
+              })
+          }
+
+          return {props: {events: events}, revalidate: 60}
+      })
 }
 
 export default AllEventsPage;
