@@ -1,9 +1,14 @@
 import EventList from "@/components/events/EventList";
+import Head from "next/head";
 
 function HomePage(props) {
 
   return (
     <div>
+      <Head>
+        <title>Nextjs Events</title>
+        <meta name="description" content="Search for local events"/>
+      </Head>
       <EventList events={props.featuredEvents}/>
     </div>
   );
